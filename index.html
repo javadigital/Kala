@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KALA OS - Navigasi VUCA & Post-Normal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;600;700;900&family=Noto+Serif:ital,wght@0,400;0,700;1,400&family=Space+Mono&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --glass: rgba(15, 23, 42, 0.85);
+            --border: rgba(255, 255, 255, 0.1);
+            --accent-amber: #fbbf24;
+            --accent-red: #f87171;
+            --accent-emerald: #34d399;
+            --accent-orange: #f97316;
+        }
+        body {
+            font-family: 'Noto Sans', sans-serif;
+            background-color: #020617;
+            color: #cbd5e1;
+            margin: 0;
+            overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .font-serif { font-family: 'Noto Serif', serif; }
+        .font-mono { font-family: 'Space Mono', monospace; }
+        
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .active-tab-amber { color: var(--accent-amber); background: rgba(251, 191, 36, 0.12); border-color: rgba(251, 191, 36, 0.3); }
+        .active-tab-emerald { color: var(--accent-emerald); background: rgba(52, 211, 153, 0.12); border-color: rgba(52, 211, 153, 0.3); }
+        .active-tab-cyan { color: #22d3ee; background: rgba(34, 211, 238, 0.12); border-color: rgba(34, 211, 238, 0.3); }
+        .active-tab-purple { color: #a78bfa; background: rgba(167, 139, 250, 0.12); border-color: rgba(167, 139, 250, 0.3); }
+        .active-tab-red { color: var(--accent-red); background: rgba(248, 113, 113, 0.12); border-color: rgba(248, 113, 113, 0.3); }
+
+        @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        .animate-spin-slow { animation: spin-slow 60s linear infinite; }
+        .animate-spin-reverse { animation: spin-reverse 45s linear infinite; }
+        .animate-spin-fast { animation: spin-slow 30s linear infinite; }
+        
+        #ambient-glow {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+            filter: blur(140px);
+            opacity: 0.18;
+            pointer-events: none;
+            transition: background-color 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 0;
+        }
+
+        .fade-in { animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        #main-content {
+            overscroll-behavior-y: contain;
+        }
+
+        /* SVG Curved Text Styling */
+        .svg-chakra-text {
+            font-family: 'Noto Sans', sans-serif;
+            font-weight: 900;
+            fill: currentColor;
+            pointer-events: none;
+        }
+        .glow-amber { filter: drop-shadow(0 0 10px rgba(251, 191, 36, 0.8)); }
+        .glow-orange { filter: drop-shadow(0 0 12px rgba(249, 115, 22, 0.8)); }
+        .glow-yellow { filter: drop-shadow(0 0 15px rgba(250, 204, 21, 1)); }
+    </style>
+</head>
+<body class="h-screen flex flex-col md:flex-row">
+
+    <div id="ambient-glow" class="bg-amber-600"></div>
+
+    <!-- Area Konten Utama -->
+    <main id="main-content" class="flex-1 relative z-10 overflow-hidden order-1 md:order-2 flex flex-col bg-slate-950/40">
+        <!-- Konten akan dimasukkan di sini via JavaScript -->
+    </main>
+
+    <!-- Navigasi -->
+    <nav class="w-full md:w-72 glass md:bg-slate-950/90 border-t md:border-t-0 md:border-r border-slate-800/60 relative z-50 order-2 md:order-1 flex flex-row md:flex-col shrink-0 px-2 md:px-0 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+        <div class="hidden md:flex h-24 items-center gap-4 px-6 border-b border-slate-800/40">
+            <i data-lucide="zap" class="text-amber-500 w-8 h-8"></i>
+            <div>
+                <h1 class="text-2xl font-black tracking-widest text-slate-100 uppercase leading-none">Kala<span class="text-amber-500">.OS</span></h1>
+                <p class="text-[9px] text-amber-500/70 tracking-[0.2em] font-mono mt-1 uppercase">Ancient Hybrid Nav</p>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-row md:flex-col justify-around md:justify-start items-center md:items-stretch py-2 md:py-8 px-2 md:px-4 space-x-1 md:space-x-0 md:space-y-3 overflow-x-auto no-scrollbar">
+            <button onclick="switchTab('council')" id="nav-council" class="nav-item flex flex-col md:flex-row items-center gap-1 md:gap-4 px-3 py-2 md:px-4 md:py-3.5 rounded-2xl transition-all border border-transparent min-w-[72px] md:min-w-0 active-tab-amber">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-sm font-bold uppercase tracking-tighter">Matriks</span>
+            </button>
+            <button onclick="switchTab('news')" id="nav-news" class="nav-item flex flex-col md:flex-row items-center gap-1 md:gap-4 px-3 py-2 md:px-4 md:py-3.5 rounded-2xl transition-all border border-transparent min-w-[72px] md:min-w-0 text-slate-500">
+                <i data-lucide="globe" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-sm font-bold hidden md:block uppercase tracking-tighter">Arus</span>
+            </button>
+            <button onclick="switchTab('opportunities')" id="nav-opportunities" class="nav-item flex flex-col md:flex-row items-center gap-1 md:gap-4 px-3 py-2 md:px-4 md:py-3.5 rounded-2xl transition-all border border-transparent min-w-[72px] md:min-w-0 text-slate-500">
+                <i data-lucide="lightbulb" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-sm font-bold hidden md:block uppercase tracking-tighter">Peluang</span>
+            </button>
+            <button onclick="switchTab('myth')" id="nav-myth" class="nav-item flex flex-col md:flex-row items-center gap-1 md:gap-4 px-3 py-2 md:px-4 md:py-3.5 rounded-2xl transition-all border border-transparent min-w-[72px] md:min-w-0 text-slate-500">
+                <i data-lucide="image" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-sm font-bold hidden md:block uppercase tracking-tighter">Manifest</span>
+            </button>
+            <button onclick="switchTab('compass')" id="nav-compass" class="nav-item flex flex-col md:flex-row items-center gap-1 md:gap-4 px-3 py-2 md:px-4 md:py-3.5 rounded-2xl transition-all border border-transparent min-w-[72px] md:min-w-0 text-slate-500">
+                <i data-lucide="compass" class="w-5 h-5"></i>
+                <span class="text-[10px] md:text-sm font-bold hidden md:block uppercase tracking-tighter">Kompas</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="modal-container" class="hidden fixed inset-0 z-[100] flex items-center justify-center p-6 bg-black/90 backdrop-blur-md">
+        <div class="glass max-w-md w-full p-8 rounded-[2.5rem] border-red-500/20 text-center shadow-2xl scale-95 animate-in zoom-in duration-300">
+            <div class="w-16 h-16 bg-red-500/10 rounded-full flex items-center justify-center mx-auto mb-4 border border-red-500/20">
+                <i data-lucide="alert-circle" class="w-8 h-8 text-red-500"></i>
+            </div>
+            <h3 id="modal-title" class="text-xl font-bold text-slate-100 mb-2">Kesalahan</h3>
+            <p id="modal-body" class="text-slate-400 text-sm leading-relaxed mb-6"></p>
+            <button onclick="closeModal()" class="w-full py-4 bg-slate-800 hover:bg-slate-700 rounded-2xl font-bold transition-all active:scale-95">Tutup</button>
+        </div>
+    </div>
+
+    <script>
+        const apiKey = ""; 
+        let currentTab = 'council';
+        let chatHistory = [];
+        let newsData = [];
+        let opsData = [];
+        let mythData = null;
+        let dawuhWektu = null;
+
+        async function fetchGemini(prompt, systemInstruction = null, isJSON = true) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                tools: [{ google_search: {} }],
+                generationConfig: { temperature: 0.8, ...(isJSON ? { responseMimeType: "application/json" } : {}) }
+            };
+            if (systemInstruction) payload.systemInstruction = { parts: [{ text: systemInstruction }] };
+            for (let i = 0; i < 5; i++) {
+                try {
+                    const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+                    const data = await response.json();
+                    if (!response.ok) throw new Error(data.error?.message || "Kesalahan Gemini");
+                    const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                    return isJSON ? JSON.parse(text) : text;
+                } catch (err) { if (i === 4) throw err; await new Promise(r => setTimeout(r, Math.pow(2, i) * 1000)); }
+            }
+        }
+
+        async function fetchImagen(promptText) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/imagen-4.0-generate-001:predict?key=${apiKey}`;
+            const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ instances: [{ prompt: promptText }], parameters: { sampleCount: 1 } }) });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error?.message || "Kesalahan Imagen");
+            return `data:image/png;base64,${data.predictions[0].bytesBase64Encoded}`;
+        }
+
+        function showModal(title, body) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-body').innerText = body;
+            document.getElementById('modal-container').classList.remove('hidden');
+        }
+        function closeModal() { document.getElementById('modal-container').classList.add('hidden'); }
+
+        function switchTab(tabId) {
+            currentTab = tabId;
+            const glow = document.getElementById('ambient-glow');
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('active-tab-amber', 'active-tab-emerald', 'active-tab-cyan', 'active-tab-purple', 'active-tab-red');
+                el.classList.add('text-slate-500');
+            });
+            const colors = { council: 'amber', news: 'emerald', opportunities: 'cyan', myth: 'purple', compass: 'red' };
+            document.getElementById(`nav-${tabId}`).classList.add(`active-tab-${colors[tabId]}`);
+            document.getElementById(`nav-${tabId}`).classList.remove('text-slate-500');
+            glow.className = `bg-${colors[tabId]}-600`;
+            renderContent();
+        }
+
+        function renderContent() {
+            const main = document.getElementById('main-content');
+            main.innerHTML = '';
+            switch(currentTab) {
+                case 'council': renderCouncil(main); break;
+                case 'news': renderNews(main); break;
+                case 'opportunities': renderOpportunities(main); break;
+                case 'myth': renderMyth(main); break;
+                case 'compass': renderCompass(main); break;
+            }
+            lucide.createIcons();
+        }
+
+        function renderCouncil(container) {
+            container.innerHTML = `
+                <div class="h-16 md:h-24 px-6 border-b border-slate-800/40 flex items-center gap-3 shrink-0 glass">
+                    <i data-lucide="cpu" class="text-amber-500"></i>
+                    <h2 class="text-xl font-bold text-slate-100">Matriks Kalantara</h2>
+                </div>
+                <div id="chat-window" class="flex-1 overflow-y-auto p-4 md:p-8 space-y-6 no-scrollbar pb-32">
+                    ${chatHistory.length === 0 ? `<div class="h-full flex flex-col items-center justify-center opacity-30 text-center px-6"><i data-lucide="cpu" class="w-16 h-16 mb-4 text-amber-500"></i><p class="font-mono text-sm uppercase tracking-widest text-slate-400">Menanti Input...</p></div>` : 
+                    chatHistory.map(msg => `
+                        <div class="flex flex-col space-y-4 fade-in">
+                            <div class="self-end max-w-[85%] bg-slate-800 p-4 rounded-3xl rounded-tr-none border border-slate-700 text-slate-100 shadow-xl">${msg.user}</div>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                <div class="glass p-5 rounded-3xl border-blue-500/10 text-xs md:text-sm text-slate-300 leading-relaxed"><span class="text-[9px] font-black uppercase tracking-widest text-blue-400 block mb-2">Sang Taktik</span>${msg.ai.tactician}</div>
+                                <div class="glass p-5 rounded-3xl border-emerald-500/10 text-xs md:text-sm text-slate-300 leading-relaxed"><span class="text-[9px] font-black uppercase tracking-widest text-emerald-400 block mb-2">Sang Ontolog</span>${msg.ai.ontologist}</div>
+                                <div class="glass p-5 rounded-3xl border-red-500/10 text-xs md:text-sm text-slate-300 leading-relaxed"><span class="text-[9px] font-black uppercase tracking-widest text-red-400 block mb-2">Sang Absurdis</span>${msg.ai.absurdist}</div>
+                            </div>
+                            <div class="bg-gradient-to-br from-amber-500/10 to-slate-900 border border-amber-500/30 p-6 rounded-[2rem] shadow-2xl">
+                                <div class="flex items-center gap-2 mb-3"><div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div><span class="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500">Sintesis KALA</span></div>
+                                <p class="text-slate-100 font-serif italic md:text-lg leading-relaxed font-serif">${msg.ai.synthesis}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="absolute bottom-0 left-0 w-full p-4 md:p-6 bg-gradient-to-t from-slate-950 via-slate-950/90 to-transparent z-20">
+                    <div class="max-w-5xl mx-auto flex gap-2 glass p-1 rounded-3xl shadow-2xl">
+                        <input id="chat-input" type="text" placeholder="Bedah anomali saat ini..." class="flex-1 bg-transparent px-5 py-4 focus:outline-none text-slate-100 placeholder-slate-500">
+                        <button id="send-btn" class="bg-amber-500 p-4 rounded-2xl text-slate-950 hover:bg-amber-400 transition-all active:scale-90 shadow-xl"><i data-lucide="send" class="w-5 h-5"></i></button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('send-btn').onclick = handleChat;
+            document.getElementById('chat-input').onkeypress = (e) => e.key === 'Enter' && handleChat();
+            const win = document.getElementById('chat-window');
+            win.scrollTop = win.scrollHeight;
+        }
+
+        async function handleChat() {
+            const input = document.getElementById('chat-input');
+            const val = input.value.trim();
+            if(!val) return;
+            input.value = '';
+            const btn = document.getElementById('send-btn');
+            btn.disabled = true;
+            btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin w-5 h-5"></i>';
+            lucide.createIcons();
+            try {
+                const sys = "Anda adalah KALA Core. Bedah masalah user menjadi 3 perspektif (Taktik, Ontologi, Absurdisme) dan 1 Sintesis. Format JSON: {tactician, ontologist, absurdist, synthesis}. Bahasa Indonesia.";
+                const res = await fetchGemini(val, sys);
+                chatHistory.push({ user: val, ai: res });
+                renderContent();
+            } catch (e) { showModal("Proses Gagal", e.message); }
+            finally { btn.disabled = false; btn.innerHTML = '<i data-lucide="send" class="w-5 h-5"></i>'; lucide.createIcons(); }
+        }
+
+        async function renderNews(container) {
+            container.innerHTML = `
+                <div class="h-16 md:h-24 px-8 border-b border-slate-800/40 flex items-center justify-between shrink-0 glass text-slate-100"><h2 class="text-xl font-bold flex items-center gap-3"><i data-lucide="globe" class="text-emerald-500"></i> Arus Realitas</h2><button onclick="refreshNews()" class="p-3 bg-slate-900 border border-slate-800 rounded-2xl text-emerald-500 transition-all active:scale-90"><i data-lucide="refresh-cw" id="news-loader"></i></button></div>
+                <div class="flex-1 overflow-y-auto p-4 md:p-8 space-y-5 pb-24 no-scrollbar">
+                    ${newsData.length === 0 ? '<div class="h-full flex items-center justify-center text-slate-500 font-mono animate-pulse text-xs uppercase tracking-widest">Memindai Realitas Global...</div>' : 
+                    newsData.map(n => `
+                        <div class="glass p-7 rounded-[2rem] space-y-4 fade-in shadow-xl group"><div class="flex items-center justify-between"><span class="text-[9px] font-black text-emerald-500 uppercase tracking-widest px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">${n.kategori}</span><div class="w-1.5 h-1.5 bg-red-500 rounded-full animate-ping"></div></div><h3 class="text-xl font-black text-slate-100 leading-tight group-hover:text-emerald-300 transition-colors">${n.judul}</h3><p class="text-slate-400 text-sm leading-relaxed">${n.ringkasan}</p><div class="bg-slate-950/80 p-5 rounded-2xl border border-slate-800/50 text-[13px] italic border-l-4 border-l-emerald-500 text-slate-300 font-serif">"${n.analisis}"</div></div>
+                    `).join('')}
+                </div>
+            `;
+            if(newsData.length === 0) refreshNews();
+        }
+
+        async function refreshNews() {
+            const loader = document.getElementById('news-loader');
+            if(loader) loader.classList.add('animate-spin');
+            try {
+                const res = await fetchGemini("Cari 3 berita global paling signifikan hari ini (VUCA/Post-Normal). Format JSON: {berita: [{kategori, judul, ringkasan, analisis}]}");
+                newsData = res.berita;
+                if(currentTab === 'news') renderContent();
+            } catch (e) { showModal("Data Gagal", e.message); }
+            finally { if(loader) loader.classList.remove('animate-spin'); }
+        }
+
+        async function renderOpportunities(container) {
+            container.innerHTML = `
+                <div class="h-16 md:h-24 px-8 border-b border-slate-800/40 flex items-center justify-between shrink-0 glass text-slate-100"><h2 class="text-xl font-bold flex items-center gap-3"><i data-lucide="lightbulb" class="text-cyan-500"></i> Matriks Peluang</h2><button onclick="refreshOps()" class="text-cyan-500 p-3 bg-slate-900 border border-slate-800 rounded-2xl active:scale-90"><i data-lucide="refresh-cw" id="ops-loader"></i></button></div>
+                <div class="flex-1 overflow-y-auto p-4 md:p-8 grid grid-cols-1 lg:grid-cols-2 gap-5 pb-24 no-scrollbar">
+                    ${opsData.length === 0 ? '<div class="col-span-full h-full flex items-center justify-center text-slate-500 font-mono text-xs uppercase tracking-widest animate-pulse">Menghitung Probabilitas...</div>' : 
+                    opsData.map(o => `
+                        <div class="glass p-7 rounded-[2.5rem] space-y-4 fade-in shadow-xl group"><span class="text-[9px] font-black text-cyan-400 uppercase tracking-widest px-3 py-1 bg-cyan-500/10 rounded-full border border-cyan-500/20">${o.sektor}</span><h3 class="text-xl font-black text-slate-100 leading-tight group-hover:text-cyan-300 transition-colors">${o.judul}</h3><p class="text-slate-400 text-sm leading-relaxed">${o.logika}</p><div class="bg-cyan-500/10 p-5 rounded-2xl border border-cyan-500/20"><div class="flex items-center gap-2 mb-2 text-cyan-400 font-black text-[10px] uppercase tracking-widest"><i data-lucide="zap" class="w-3 h-3"></i> Taktik</div><p class="text-cyan-100 text-sm">${o.taktik}</p></div></div>
+                    `).join('')}
+                </div>
+            `;
+            if(opsData.length === 0) refreshOps();
+        }
+
+        async function refreshOps() {
+            const loader = document.getElementById('ops-loader');
+            if(loader) loader.classList.add('animate-spin');
+            try {
+                const res = await fetchGemini("Temukan 3 peluang asimetris era Post-Normal hari ini. Format JSON: {peluang: [{sektor, judul, logika, taktik}]}");
+                opsData = res.peluang;
+                if(currentTab === 'opportunities') renderContent();
+            } catch (e) { showModal("Analisa Gagal", e.message); }
+            finally { if(loader) loader.classList.remove('animate-spin'); }
+        }
+
+        function renderMyth(container) {
+            container.innerHTML = `
+                <div class="h-16 md:h-24 px-8 border-b border-slate-800/40 flex items-center gap-3 shrink-0 glass text-slate-100"><i data-lucide="image" class="text-purple-500"></i><h2 class="text-xl font-bold">Manifest Realitas</h2></div>
+                <div class="flex-1 overflow-y-auto p-4 md:p-8 flex flex-col items-center justify-center no-scrollbar pb-24">
+                    ${!mythData ? `
+                        <div class="text-center space-y-8 animate-in fade-in max-w-sm"><div class="w-40 h-40 bg-purple-500/5 rounded-full flex items-center justify-center mx-auto border border-purple-500/10 relative shadow-2xl"><div class="absolute inset-0 bg-purple-500/5 animate-ping rounded-full opacity-20"></div><i data-lucide="sparkles" class="w-20 h-20 text-purple-500/30"></i></div><div class="space-y-4"><h3 class="text-3xl font-black text-slate-100 uppercase tracking-tighter">Manifestasi</h3><p class="text-slate-500 text-sm leading-relaxed">Visualisasi kegilaan realitas hari ini.</p></div><button id="manifest-btn" onclick="generateMyth()" class="w-full py-5 bg-purple-600 rounded-[2.5rem] text-white font-black text-lg shadow-2xl hover:bg-purple-500 uppercase tracking-widest">Wujudkan</button></div>
+                    ` : `
+                        <div class="w-full max-w-4xl flex flex-col items-center space-y-8 fade-in"><div class="relative group w-full max-h-[70vh] flex justify-center overflow-hidden rounded-[3rem] border border-slate-800 shadow-[0_50px_100px_rgba(0,0,0,0.6)] bg-black"><img src="${mythData.image}" class="w-full h-auto object-contain" alt="Manifestasi"><div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent opacity-80"></div></div><div class="w-full max-w-2xl glass p-10 rounded-[3rem] border-purple-500/30 text-center shadow-2xl relative"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-purple-500/20 px-4 py-1 rounded-full border border-purple-500/30 font-black text-[9px] text-purple-400 tracking-[0.3em]">HAKEKAT</div><p class="text-slate-100 font-medium text-lg md:text-xl leading-relaxed italic font-serif">"${mythData.text}"</p></div><button onclick="generateMyth()" class="flex items-center gap-3 text-slate-500 hover:text-purple-400 text-xs font-black uppercase transition-all"><i data-lucide="refresh-cw" class="w-4 h-4"></i> Reset</button></div>
+                    `}
+                </div>
+            `;
+        }
+
+        async function generateMyth() {
+            const btn = document.getElementById('manifest-btn');
+            if(btn) { btn.disabled = true; btn.innerHTML = '<i data-lucide="loader-2" class="animate-spin mr-2"></i> Merender...'; lucide.createIcons(); }
+            try {
+                const res = await fetchGemini("Cari berita paling aneh hari ini. Berikan keterangan jujur sederhana dan prompt gambar Imagen. Format JSON: {text, prompt}");
+                const img = await fetchImagen(res.prompt);
+                mythData = { text: res.text, image: img };
+                renderContent();
+            } catch (e) { showModal("Manifestasi Gagal", e.message); }
+        }
+
+        function renderCompass(container) {
+            const time = new Date();
+            const kawruh = calculateKawruh(time);
+            
+            container.innerHTML = `
+                <div class="flex-1 overflow-y-auto no-scrollbar relative flex flex-col pt-8">
+                    <div class="absolute inset-0 opacity-[0.03] pointer-events-none flex items-center justify-center overflow-hidden">
+                        <i data-lucide="rotate-cw" class="w-[1000px] h-[1000px] animate-spin-slow text-red-500"></i>
+                    </div>
+
+                    <div class="min-h-full flex flex-col items-center justify-start p-6 text-center relative z-10 w-full max-w-4xl mx-auto space-y-8 pb-40">
+                        <div class="space-y-3 fade-in">
+                            <div class="text-6xl md:text-8xl font-black text-slate-100 tracking-tighter font-mono leading-none flex items-baseline justify-center">
+                                <span>${time.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false })}</span>
+                                <span class="text-2xl font-light opacity-30 ml-2">:${time.toLocaleTimeString('id-ID', { second: '2-digit' })}</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2">
+                                <div class="text-3xl md:text-4xl font-serif text-amber-500 font-bold tracking-[0.1em] uppercase">${kawruh.dinten} ${kawruh.pasaran}</div>
+                                <div class="flex flex-wrap items-center justify-center gap-2">
+                                    <div class="px-3 py-1 glass rounded-full text-[9px] font-black text-red-400 uppercase tracking-widest border-red-500/20">Neptu: ${kawruh.neptu}</div>
+                                    <div class="px-3 py-1 glass rounded-full text-[9px] font-black text-blue-400 uppercase tracking-widest border-blue-500/20">${kawruh.wanci}</div>
+                                    <div class="px-3 py-1 glass rounded-full text-[9px] font-black text-amber-400 uppercase tracking-widest border-amber-500/20">${dawuhWektu?.cakra_phase || "SIKLUS"}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="relative w-80 h-80 md:w-[32rem] md:h-[32rem] shrink-0 flex items-center justify-center fade-in delay-200">
+                            
+                            <svg class="absolute inset-0 w-full h-full transform transition-all duration-700" viewBox="0 0 400 400">
+                                <defs>
+                                    <path id="outerCircle" d="M 200, 200 m -175, 0 a 175,175 0 1,1 350,0 a 175,175 0 1,1 -350,0" />
+                                    <path id="midCircle" d="M 200, 200 m -125, 0 a 125,125 0 1,0 250,0 a 125,125 0 1,0 -250,0" />
+                                    <path id="innerCircle" d="M 200, 200 m -75, 0 a 75,75 0 1,1 150,0 a 75,75 0 1,1 -150,0" />
+                                </defs>
+
+                                <g class="animate-spin-slow glow-amber origin-center text-amber-400">
+                                    <circle cx="200" cy="200" r="175" fill="none" stroke="rgba(251,191,36,0.08)" stroke-width="32" />
+                                    <text class="svg-chakra-text" font-size="22">
+                                        <textPath href="#outerCircle" startOffset="0%">
+                                            ꦲ ꦤ ꦕ ꦫ ꦏ ꦢ ꦠ ꦱ ꦮ ꦭ ꦥ ꦝ ꦗ ꦪ ꦚ ꦩ ꦒ ꦧ ꦛ ꦔ • ꦲ ꦤ ꦕ ꦫ ꦏ ꦢ ꦠ ꦱ ꦮ ꦭ ꦥ ꦝ ꦗ ꦪ ꦚ ꦩ ꦒ ꦧ ꦛ ꦔ
+                                        </textPath>
+                                    </text>
+                                </g>
+
+                                <g class="animate-spin-reverse glow-orange origin-center text-orange-500">
+                                    <circle cx="200" cy="200" r="125" fill="none" stroke="rgba(249,115,22,0.12)" stroke-width="40" />
+                                    <text class="svg-chakra-text font-black" font-size="32">
+                                        <textPath href="#midCircle" startOffset="0%">
+                                            ꦭꦼꦒꦶ • ꦥꦲꦶꦁ • ꦥꦺꦴꦤ꧀ • ꦮꦒꦺ • ꦏ꧀ꦭꦶꦮꦺꦴꦤ꧀ • ꦭꦼꦒꦶ • ꦥꦲꦶꦁ • ꦥꦺꦴꦤ꧀ • ꦮꦒꦺ • ꦏ꧀ꦭꦶꦮꦺꦴꦤ꧀
+                                        </textPath>
+                                    </text>
+                                </g>
+
+                                <g class="animate-spin-fast glow-yellow origin-center text-yellow-300">
+                                    <circle cx="200" cy="200" r="75" fill="none" stroke="rgba(250,204,21,0.2)" stroke-width="28" />
+                                    <text class="svg-chakra-text" font-size="18" letter-spacing="0.05em">
+                                        <textPath href="#innerCircle" startOffset="0%">
+                                            ꦱꦱ꧀ꦠꦿꦗꦼꦤ꧀ꦢꦿ ꦲꦪꦸꦤꦶꦁꦫꦠ꧀ • ꦱꦱ꧀ꦠꦿꦗꦼꦤ꧀ꦢꦿ ꦲꦪꦸꦤꦶꦁꦫꦠ꧀
+                                        </textPath>
+                                    </text>
+                                </g>
+                            </svg>
+                            
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <div class="absolute inset-0 flex items-center justify-center transition-transform duration-[2000ms] cubic-bezier(0.23, 1, 0.32, 1)" style="transform: rotate(${kawruh.nogoAngle}deg)">
+                                    <div class="w-1.5 h-36 md:h-44 bg-gradient-to-t from-transparent via-red-500/60 to-red-500 rounded-full shadow-[0_0_20px_red]">
+                                        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-4 h-4 bg-red-400 rounded-full border-[3px] border-slate-950 shadow-[0_0_10px_red]"></div>
+                                    </div>
+                                </div>
+                                <div class="w-14 h-14 bg-slate-950 border-[4px] border-slate-900 rounded-full flex items-center justify-center shadow-2xl z-10">
+                                    <i data-lucide="anchor" class="w-6 h-6 text-slate-500 opacity-40"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3 w-full max-w-2xl px-2 fade-in delay-300">
+                            ${renderCard("Sengkala", kawruh.nogoName, "shield-alert", "red", "Area Terlarang")}
+                            ${renderCard("Rejeki", kawruh.arahRejeki, "target", "emerald", "Vektor Peluang")}
+                            ${renderCard("Kahanan", kawruh.kahanan, "flame", kawruh.neptu > 12 ? 'red' : 'cyan', "Karakter Hari")}
+                            ${renderCard("Fase", dawuhWektu?.cakra_phase || "...", "rotate-cw", "amber", "Cakra Zaman")}
+                        </div>
+
+                        <div id="dawuh-section" class="w-full relative group fade-in delay-500">
+                            <div class="absolute -inset-1.5 bg-gradient-to-r from-red-600/20 via-amber-600/20 to-emerald-600/20 rounded-[2.5rem] blur-2xl opacity-10"></div>
+                            <div class="glass p-6 md:p-10 rounded-[3rem] border-white/10 relative shadow-2xl overflow-hidden text-center">
+                                <div class="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-amber-500/40 to-transparent"></div>
+                                <div class="flex items-center justify-center gap-3 mb-4">
+                                    <i data-lucide="sparkles" class="w-4 h-4 text-amber-500 animate-pulse"></i>
+                                    <span class="text-[9px] font-black uppercase tracking-[0.4em] text-amber-500">Dawuh Wektu • VUCA Context</span>
+                                </div>
+                                <p id="dawuh-text" class="text-slate-200 font-serif italic text-lg md:text-2xl leading-relaxed">"${dawuhWektu?.pesan || "Menyelaraskan Frekuensi..."}"</p>
+                                <div class="mt-6 flex justify-center">
+                                    <button onclick="fetchDawuh()" class="px-6 py-2 glass rounded-full text-[9px] font-black text-slate-400 hover:text-amber-500 transition-all uppercase tracking-widest active:scale-95 border-white/5">Update</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <p class="text-[10px] text-slate-600 italic max-w-xs mx-auto opacity-30 font-serif leading-relaxed pb-10">"Eling lan waspada minangka kuncine navigasi era Post-Normal."</p>
+                    </div>
+                </div>
+            `;
+            if(!dawuhWektu) fetchDawuh();
+        }
+
+        function renderCard(label, val, icon, color, desc) {
+            const colors = { red: 'border-red-500/15 bg-red-500/5 text-red-400 shadow-xl', emerald: 'border-emerald-500/15 bg-emerald-500/5 text-emerald-400 shadow-xl', amber: 'border-amber-500/15 bg-amber-500/5 text-amber-400 shadow-xl', cyan: 'border-cyan-500/15 bg-cyan-500/5 text-cyan-400 shadow-xl' };
+            return `<div class="glass border ${colors[color]} p-4 md:p-6 rounded-[2rem] text-left transition-all active:scale-95 group"><div class="flex items-center gap-2 mb-1"><i data-lucide="${icon}" class="w-3.5 h-3.5 opacity-50"></i><span class="text-[8px] font-black uppercase text-slate-500 tracking-wider">${label}</span></div><div class="text-lg md:text-xl font-black text-slate-100 group-hover:translate-x-1 transition-transform truncate">${val}</div><div class="text-[8px] text-slate-600 italic mt-0.5 font-medium">${desc}</div></div>`;
+        }
+
+        async function fetchDawuh() {
+            const text = document.getElementById('dawuh-text');
+            if(text) text.innerHTML = '<span class="animate-pulse opacity-40 text-sm font-mono tracking-widest uppercase">Sinkronisasi...</span>';
+            try {
+                const res = await fetchGemini("Gunakan Google Search. Berikan 'Dawuh Wektu' (Pesan Waktu) singkat (Bahasa Indonesia) berkolerasi dengan geopolitik/VUCA hari ini & Cakra Manggilingan. Format JSON: {pesan, cakra_phase}");
+                dawuhWektu = res;
+                if(currentTab === 'compass') renderContent();
+            } catch (e) { if(text) text.innerText = "Distorsi frekuensi."; }
+        }
+
+        function calculateKawruh(time) {
+            const dName = ['Ngahad', 'Senen', 'Selasa', 'Rebo', 'Kemis', 'Jemuwah', 'Setu'][time.getDay()];
+            const dNeptu = [5, 4, 3, 7, 8, 6, 9][time.getDay()];
+            const diffDays = Math.floor(time.getTime() / 86400000);
+            const pName = ['Wage', 'Kliwon', 'Legi', 'Pahing', 'Pon'][diffDays % 5];
+            const pNeptu = [4, 8, 5, 9, 7][diffDays % 5];
+            const total = dNeptu + pNeptu;
+            const hour = time.getHours();
+            let wanci = "";
+            if(hour >= 5 && hour < 6) wanci = "Byar (Fajar)";
+            else if(hour >= 6 && hour < 9) wanci = "Tengange Enjing";
+            else if(hour >= 11 && hour < 13) wanci = "Tengange (Siang)";
+            else if(hour >= 15 && hour < 17.5) wanci = "Lingsir Kulon (Sore)";
+            else if(hour >= 17.5 && hour < 18.5) wanci = "Surup (Maghrib)";
+            else if(hour >= 18.5 && hour < 21) wanci = "Wengi";
+            else if(hour >= 23 || hour < 1) wanci = "Lingsir Wengi";
+            else if(hour >= 1 && hour < 3) wanci = "Sepi Mamring";
+            else wanci = "Prabangkara";
+            const nogoDirs = ['Wetan', 'Kidul', 'Kulon', 'Lor', 'Wetan', 'Kidul', 'Kulon'];
+            const currentNogo = nogoDirs[time.getDay()];
+            const angle = { Lor: 0, Wetan: 90, Kidul: 180, Kulon: 270 }[currentNogo];
+            const arahRejeki = (total % 4 === 0) ? 'Lor' : (total % 4 === 1) ? 'Wetan' : (total % 4 === 2) ? 'Kidul' : 'Kulon';
+            return { dinten: dName, pasaran: pName, neptu: total, nogoName: currentNogo, nogoAngle: angle, arahRejeki, kahanan: total > 12 ? 'Bebaya' : 'Ayem', wanci };
+        }
+
+        window.onload = () => { switchTab('council'); };
+    </script>
+</body>
+</html>
